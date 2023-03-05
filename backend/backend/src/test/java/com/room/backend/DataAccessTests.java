@@ -1,11 +1,12 @@
 package com.room.backend;
 
+import com.room.backend.controller.MainController;
 import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersInfoExample;
+import com.room.backend.data.entity.UsersLogin;
 import com.room.backend.data.entity.UsersLoginExample;
 import com.room.backend.data.mapper.UsersInfoMapper;
 import com.room.backend.data.mapper.UsersLoginMapper;
-import com.room.backend.service.UserService;
+import com.room.backend.service.UsersInfoService;
 import com.room.backend.service.UsersLoginService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,34 +44,24 @@ public class DataAccessTests {
     UsersLoginService usersLoginService;
 
     @Autowired
-    UsersLoginMapper usersLoginMapper;
-
+    UsersInfoService usersInfoService;
 
     @Autowired
-    UserService userService;
+    MainController mainController;
 
     @Test
     @Rollback
-    void testRegisterAndDeleteExampleUser() throws Exception {
+    void testCreateUser() throws Exception {
 
-//        Integer id = userService.registerMember("asdf", "a@a.a", 123, new Date(System.currentTimeMillis()), "m", "asdf");
-//
-//        System.out.println("Start test");
-//        System.out.println(usersLoginMapper.selectByExample(new UsersLoginExample()));
-//        System.out.println(usersInfoMapper.selectByExample(new UsersInfoExample()));
-//
-//        userService.removeUser(id);
-//
-//        System.out.println(usersLoginMapper.selectByExample(new UsersLoginExample()));
-//        System.out.println(usersInfoMapper.selectByExample(new UsersInfoExample()));
+        UsersLogin usersLogin = usersLoginService.createNewUser("123", 1, new Date(System.currentTimeMillis()));
+        UsersInfo usersInfo = usersInfoService.createNewUser("asdf", "a@a.a", 123, new Date(System.currentTimeMillis()), "m", 1);
+
+        System.out.println("Start test");
+        System.out.println(usersInfoService.getUsersInfoById(usersLogin.getId()));
+        System.out.println(usersInfo);
+
 
     }
 
-//    @Test
-//    void addUser() throws Exception {
-//        int id = userService.registerMember("asdf", "a@a.a", 123, new Date(System.currentTimeMillis()), "m", "asdf");
-//        System.out.println(usersInfoMapper.selectByPrimaryKey(id));
-//        System.out.println("success");
-//    }
 
 }

@@ -1,9 +1,7 @@
 package com.room.backend.service.impl;
 
 import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersInfoExample;
 import com.room.backend.data.entity.UsersLogin;
-import com.room.backend.data.entity.UsersLoginExample;
 import com.room.backend.data.mapper.UsersLoginMapper;
 import com.room.backend.service.UsersInfoService;
 import com.room.backend.service.UsersLoginService;

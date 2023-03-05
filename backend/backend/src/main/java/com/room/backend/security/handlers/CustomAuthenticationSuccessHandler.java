@@ -1,9 +1,7 @@
 package com.room.backend.security.handlers;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.room.backend.data.entity.UsersLogin;
-import com.room.backend.service.UserService;
 import com.room.backend.service.UsersLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

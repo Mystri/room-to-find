@@ -9,6 +9,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/index.js',
     assetModuleFilename: 'media/[hash][ext][query]',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
@@ -83,6 +84,7 @@ module.exports = {
     },
     port: 3001,
     hot: true,
+    historyApiFallback: true,
   },
   devtool: 'eval-cheap-source-map',
 };

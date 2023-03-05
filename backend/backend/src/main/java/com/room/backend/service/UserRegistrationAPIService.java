@@ -1,10 +1,11 @@
 package com.room.backend.service;
 
-import com.room.backend.data.entity.UsersInfo;
-
 import java.util.Date;
 
-public interface UserService {
+/**
+ * Register users. Should be the first layer
+ */
+public interface UserRegistrationAPIService {
 
     int registerMember(String userName,
                      String email,
