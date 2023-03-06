@@ -1,8 +1,9 @@
 package com.room.backend.security.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.room.backend.data.entity.UsersInfo;
 import com.room.backend.data.entity.UsersLogin;
-import com.room.backend.service.UsersLoginService;
+import com.room.backend.service.UserLookupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,10 +20,16 @@ import java.util.Date;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    UsersLoginService usersLoginService;
+    UserLookupService userLookupService;
+
 
     @Autowired
     ObjectMapper objectMapper;
+
+    private UsersLogin getLoginInfoByUsername(String userName) {
+        UsersInfo usersInfo = userLookupService.findUserByName(userName);
+        return userLookupService.findById(usersInfo.getLogin_id());
+    }
 
     /**
      * @param request
@@ -34,7 +41,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UsersLogin usersLogin = usersLoginService.getLoginInfoByUsername(userDetails.getUsername());
+        UsersLogin usersLogin = getLoginInfoByUsername(userDetails.getUsername());
 
         usersLogin.setLast_modify(new Date(System.currentTimeMillis()));
 

@@ -3,11 +3,9 @@ package com.room.backend;
 import com.room.backend.controller.MainController;
 import com.room.backend.data.entity.UsersInfo;
 import com.room.backend.data.entity.UsersLogin;
-import com.room.backend.data.entity.UsersLoginExample;
 import com.room.backend.data.mapper.UsersInfoMapper;
-import com.room.backend.data.mapper.UsersLoginMapper;
-import com.room.backend.service.UsersInfoService;
-import com.room.backend.service.UsersLoginService;
+import com.room.backend.service.UserLookupService;
+import com.room.backend.service.UserRegistrationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +13,7 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.SQLException;
 
 @SpringBootTest
@@ -41,24 +39,23 @@ public class DataAccessTests {
 //    }
 
     @Autowired
-    UsersLoginService usersLoginService;
+    UserRegistrationService userRegistrationService;
 
     @Autowired
-    UsersInfoService usersInfoService;
-
-    @Autowired
-    MainController mainController;
+    UserLookupService userLookupService;
 
     @Test
     @Rollback
     void testCreateUser() throws Exception {
 
-        UsersLogin usersLogin = usersLoginService.createNewUser("123", 1, new Date(System.currentTimeMillis()));
-        UsersInfo usersInfo = usersInfoService.createNewUser("asdf", "a@a.a", 123, new Date(System.currentTimeMillis()), "m", 1);
-
         System.out.println("Start test");
-        System.out.println(usersInfoService.getUsersInfoById(usersLogin.getId()));
+        UsersInfo usersInfo = userRegistrationService.registerMember("asdf", "a@a.a", 123, new Date(System.currentTimeMillis()),"m", "asdf");
+
+        System.out.println(userLookupService.findUserById(usersInfo.getId()));
         System.out.println(usersInfo);
+
+        System.out.println("Deleting user");
+//        userRegistrationService.removeUser(usersInfo.getId());
 
 
     }

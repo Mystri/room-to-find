@@ -3,9 +3,10 @@ package com.room.backend.controller;
 import com.room.backend.data.entity.UsersInfo;
 import com.room.backend.data.entity.UsersLogin;
 import com.room.backend.data.mapper.UsersInfoMapper;
-import com.room.backend.service.UsersInfoService;
-import com.room.backend.service.UsersLoginService;
+import com.room.backend.service.UserLookupService;
+import com.room.backend.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -20,15 +21,15 @@ public class MainController {
     }
 
     @Autowired
-    UsersInfoService usersInfoService;
+    UserRegistrationService userRegistrationService;
 
     @Autowired
-    UsersLoginService usersLoginService;
+    UserLookupService userLookupService;
 
     @GetMapping("/users/{id}")
     UsersInfo getUserById(@PathVariable Integer id) {
         UsersInfoMapper usersInfoMapper;
-        UsersInfo usersInfo = usersInfoService.getUsersInfoById(id);
+        UsersInfo usersInfo = userLookupService.findUserById(id);
         return usersInfo;
     }
 
@@ -41,19 +42,13 @@ public class MainController {
                            Date birthday,
                            String gender,
                            String password) {
-        UsersLogin usersLogin = null;
+
+        UsersInfo usersInfo = null;
         try {
-            usersLogin = usersLoginService.createNewUser(password, 1, );
+            usersInfo = userRegistrationService.registerMember(userName, email, mobilePhone, birthday, gender, password);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        UsersInfo usersInfo = usersInfoService.createNewUser(
-                userName,
-                email,
-                mobilePhone,
-                birthday,
-                gender,
-                usersLogin.getId());
 
         return usersInfo;
     }
