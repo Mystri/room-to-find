@@ -2,26 +2,21 @@ import React from 'react';
 
 const axios = require('axios');
 
-import backendConfig from '../../backend.config';
-import Login from './Login';
-import { FormData, UserInfo } from '../types/frontend.js'
+import LoginPage from './LoginPage/LoginPage';
+import { LoginStatus, UserInfo } from '../types/frontend.js'
 
-interface HomeState {
-  loginStatus: "loggedin" | "loggedout" | "neverloggedin" | "loginfailed";
+type HomeState = {
+  loginStatus: LoginStatus
   userInfo: UserInfo | null;
 }
 
-interface TodoProps {
+type HomeProps = {
 
 }
 
-function loginHandler(formData: FormData) {
-  return;
-}
+class Home extends React.Component<HomeProps, HomeState> {
 
-class Home extends React.Component<TodoProps, HomeState> {
-
-  constructor(props:TodoProps) {
+  constructor(props:HomeProps) {
     super(props);
     this.state = {
       loginStatus: "loggedout",
@@ -29,14 +24,21 @@ class Home extends React.Component<TodoProps, HomeState> {
     }
   }
 
+  setLoginStatus: (loginStatus:LoginStatus) => void = (loginStatus:LoginStatus) => {
+    console.log('setlogin');
+    this.setState({
+      ...this.state,
+      loginStatus: loginStatus
+    });
+  }
+
   render() {
     switch (this.state.loginStatus) {
       case "loggedout":
-        return <Login loginHandler={loginHandler}/>;
+        return <LoginPage children={{setLoginStatus:this.setLoginStatus}}/>;
       case "loggedin":
         return <div>logged in</div>
     }
-
   }
 }
 

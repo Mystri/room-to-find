@@ -7,6 +7,8 @@ import com.room.backend.data.entity.UsersLogin;
 import com.room.backend.data.mapper.PermissionMapper;
 import com.room.backend.data.mapper.UsersInfoMapper;
 import com.room.backend.data.mapper.UsersLoginMapper;
+import com.room.backend.service.UserLookupService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
@@ -27,25 +30,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     PermissionMapper permissionMapper;
 
     @Autowired
-    UsersLoginMapper usersLoginMapper;
+    UserLookupService userLookupService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UsersInfoExample usersInfoExample = new UsersInfoExample();
-        usersInfoExample.createCriteria().andNameEqualTo(username);
+        log.info("Loading username " + username);
 
-        UsersInfo usersInfo = usersInfoMapper.selectByExample(usersInfoExample).get(0);
-        if (usersInfo == null) {
-            throw new UsernameNotFoundException("username not found");
+        UsersLogin usersLogin = userLookupService.findLoginByUsername(username);
+        if (usersLogin == null) {
+            throw new UsernameNotFoundException("Cannot find user named " + username);
         }
-
-        Integer loginId = usersInfo.getLogin_id();
-        UsersLogin usersLogin = usersLoginMapper.selectByPrimaryKey(loginId);
+        List<Permission> userPermissions = null;
+        userPermissions = userLookupService.findPermissionsByLoginId(usersLogin.getId());
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        List<Permission> userPermissions = permissionMapper.selectPermissionListByUserId(loginId);
-
         userPermissions.forEach(permission -> {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
             grantedAuthorities.add(grantedAuthority);

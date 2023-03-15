@@ -3,14 +3,23 @@ package com.room.backend.service.impl;
 
 import com.room.backend.data.entity.UsersInfo;
 import com.room.backend.data.entity.UsersLogin;
+import com.room.backend.data.entity.UsersLoginExample;
 import com.room.backend.data.mapper.UsersInfoMapper;
 import com.room.backend.data.mapper.UsersLoginMapper;
 import com.room.backend.service.UserRegistrationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 
+@Slf4j
+@Service("UserRegistrationService")
 public class UserRegistrationImpl implements UserRegistrationService {
 
     @Autowired
@@ -24,7 +33,13 @@ public class UserRegistrationImpl implements UserRegistrationService {
     @Override
     public UsersInfo registerMember(String userName, String email, Integer mobilePhone, Date birthday, String gender, String password) throws Exception {
         UsersLogin usersLogin = createNewUserLogin(password, 1);
-        return createNewUserInfo(userName, email, mobilePhone, birthday, gender, usersLogin.getId());
+        UsersInfo usersInfo = null;
+        try {
+            usersInfo = createNewUserInfo(userName, email, mobilePhone, birthday, gender, usersLogin.getId());
+        } catch (DuplicateKeyException e) {
+            log.warn("Duplicate key " + userName);
+        }
+        return usersInfo;
     }
 
     @Override
@@ -41,7 +56,7 @@ public class UserRegistrationImpl implements UserRegistrationService {
     }
 
 
-    private UsersInfo createNewUserInfo(String userName, String email, Integer mobilePhone, Date birthday, String gender, Integer loginId) {
+    private UsersInfo createNewUserInfo(String userName, String email, Integer mobilePhone, Date birthday, String gender, Integer loginId) throws DuplicateKeyException {
         UsersInfo usersInfo = new UsersInfo();
 
         usersInfo.setName(userName);
@@ -59,20 +74,23 @@ public class UserRegistrationImpl implements UserRegistrationService {
 
     }
 
-    public UsersLogin createNewUserLogin(String password, Integer role) throws Exception {
+    private UsersLogin createNewUserLogin(String password, Integer role) throws Exception {
 
         if (role != 1 && role != 2) {
             throw new Exception("invalid role");
         }
 
+        String encodedPassword = new BCryptPasswordEncoder().encode(password);
+
         UsersLogin usersLogin = new UsersLogin();
         usersLogin.setRole_id(role);
-        usersLogin.setPassword_encoded(new BCryptPasswordEncoder().encode(password));
+        usersLogin.setPassword_encoded(encodedPassword);
         usersLogin.setCreate_time(new Date(System.currentTimeMillis()));
         usersLogin.setLast_modify(new Date(System.currentTimeMillis()));
 
-        usersLoginMapper.insert(usersLogin);
-
+        int id = usersLoginMapper.insert(usersLogin);
+        usersLogin.setId(id);
         return usersLogin;
+
     }
 }

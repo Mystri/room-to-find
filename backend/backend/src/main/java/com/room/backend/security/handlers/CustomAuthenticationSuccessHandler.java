@@ -28,7 +28,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private UsersLogin getLoginInfoByUsername(String userName) {
         UsersInfo usersInfo = userLookupService.findUserByName(userName);
-        return userLookupService.findById(usersInfo.getLogin_id());
+        return userLookupService.findLoginById(usersInfo.getLogin_id());
     }
 
     /**

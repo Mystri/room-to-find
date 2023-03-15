@@ -1,4 +1,4 @@
-export interface FormData {
+export interface LoginFormData {
   username: string;
   password: string;
 }
@@ -11,3 +11,5 @@ export interface UserInfo {
   gender: string,
   password: string
 }
+
+type LoginStatus = "loggedin" | "loggedout" | "neverloggedin" | "loginfailed";

@@ -2,6 +2,7 @@ package com.room.backend;
 
 import com.room.backend.controller.MainController;
 import com.room.backend.data.entity.UsersInfo;
+import com.room.backend.data.entity.UsersInfoExample;
 import com.room.backend.data.entity.UsersLogin;
 import com.room.backend.data.mapper.UsersInfoMapper;
 import com.room.backend.service.UserLookupService;
@@ -15,6 +16,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 @SpringBootTest
 public class DataAccessTests {
@@ -31,12 +33,14 @@ public class DataAccessTests {
 
     @Autowired
     UsersInfoMapper usersInfoMapper;
-//    @Test
-//    @Rollback
-//    void testGet() {
-//        UsersInfo usersInfo = usersInfoMapper.selectByPrimaryKey(1);
-//        System.out.println(usersInfo.toString());
-//    }
+
+
+    @Test
+    @Rollback
+    void testGet() {
+        UsersInfo usersInfo = usersInfoMapper.selectByPrimaryKey(1);
+        System.out.println(usersInfo);
+    }
 
     @Autowired
     UserRegistrationService userRegistrationService;
@@ -45,18 +49,41 @@ public class DataAccessTests {
     UserLookupService userLookupService;
 
     @Test
+    void createUser() {
+        try {
+            UsersInfo usersInfo = userRegistrationService.registerMember("asd", "a@a.a", 123, new Date(System.currentTimeMillis()),"m", "asdf");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
     @Rollback
     void testCreateUser() throws Exception {
 
         System.out.println("Start test");
-        UsersInfo usersInfo = userRegistrationService.registerMember("asdf", "a@a.a", 123, new Date(System.currentTimeMillis()),"m", "asdf");
+        UsersInfo usersInfo = userRegistrationService.registerMember("asdfdf", "a@a.a", 123, new Date(System.currentTimeMillis()),"m", "asdf");
 
-        System.out.println(userLookupService.findUserById(usersInfo.getId()));
-        System.out.println(usersInfo);
+        if (usersInfo != null) {
+            System.out.println(userLookupService.findUserById(usersInfo.getId()));
+            System.out.println(usersInfo);
 
-        System.out.println("Deleting user");
-//        userRegistrationService.removeUser(usersInfo.getId());
+            System.out.println("Deleting user");
+            userRegistrationService.removeUser(usersInfo.getId());
+            System.out.println(userLookupService.findUserByName("asdfdf"));
+        }
 
+
+    }
+
+    @Test
+    void testAccessUser() {
+        UsersInfoExample usersInfoExample = new UsersInfoExample();
+        usersInfoExample.createCriteria().andNameEqualTo("asdf");
+
+        List<UsersInfo> usersInfoList = usersInfoMapper.selectByExample(usersInfoExample);
+
+        System.out.println(usersInfoList);
 
     }
 
