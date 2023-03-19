@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.room.backend.data.entity.UsersInfo;
 import com.room.backend.data.entity.UsersLogin;
 import com.room.backend.service.UserLookupService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 @Component
+@Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
@@ -26,10 +28,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     ObjectMapper objectMapper;
 
-    private UsersLogin getLoginInfoByUsername(String userName) {
-        UsersInfo usersInfo = userLookupService.findUserByName(userName);
-        return userLookupService.findLoginById(usersInfo.getLogin_id());
-    }
 
     /**
      * @param request
@@ -41,10 +39,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UsersLogin usersLogin = getLoginInfoByUsername(userDetails.getUsername());
+        UsersLogin usersLogin = userLookupService.findLoginByUsername(userDetails.getUsername());
 
         usersLogin.setLast_modify(new Date(System.currentTimeMillis()));
 
-        response.getWriter().write("authentication success");
+        String jsonString = objectMapper.writeValueAsString(userLookupService.findUserByName(userDetails.getUsername()));
+        response.getWriter().write(jsonString);
     }
 }

@@ -1,8 +1,11 @@
 package com.room.backend.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@JsonIgnoreProperties({"create_time", "last_modify", "login_id"})
 public class UsersInfo implements Serializable {
     /**
      *

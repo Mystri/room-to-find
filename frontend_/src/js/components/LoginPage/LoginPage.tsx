@@ -1,13 +1,11 @@
-import React from 'react';
-import LoginBox from './LoginBox';
-import { LoginStatus } from '../../types/frontend';
+import React, { PropsWithChildren } from 'react';
+import LoginBox, { LoginFormProps } from './LoginBox';
 
-type LoginPageProps = {
-  children: {
-    setLoginStatus: (loginStatus: LoginStatus) => void;
-  }
+interface LoginPageProps extends LoginFormProps {
+  
 }
 
-export default function LoginPage(props: LoginPageProps) {
-  return <div><LoginBox children={props.children}/></div>
+export default function LoginPage(props: PropsWithChildren<LoginPageProps>) {
+  
+  return <div><LoginBox {...props}/></div>
 };

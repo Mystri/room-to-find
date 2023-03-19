@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from "@mui/material/styles";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios, { AxiosResponse } from 'axios';
-import config from '../../../backend.config.js'
 import { Paper } from '@mui/material';
-import { LoginStatus } from '../../types/frontend.js';
+import { LoginStatus, UserInfo } from '../../types/frontend.js';
+import { useNavigate } from 'react-router';
+import { fullUrl } from '../../../backend.config';
+import { UserInfoContext } from '../../common/Contexts';
 
-type LoginFormProps = {
-  children: {
-    setLoginStatus: (loginStatus: LoginStatus) => void;
-  }
+export interface LoginFormProps {
+  setLoginStatus:(loginStatus: LoginStatus) => void,
+  setContextUserInfo: (userInfo:UserInfo) => void,
 }
 
 const LoginBoxWrapper = styled(Paper) ({
@@ -27,7 +28,16 @@ const LoginBoxWrapper = styled(Paper) ({
 const LoginInput = styled(TextField) ({
   width:'100%',
   marginBottom:'20px',
-})
+});
+
+type ResponseData = {
+  "id": number,
+  "name": string,
+  "birthday": Date,
+  "gender": string,
+  "mobile_phone": number,
+  "email": string,
+};
 
 
 function LoginBox(props: LoginFormProps) {
@@ -36,9 +46,12 @@ function LoginBox(props: LoginFormProps) {
     password:'',
   });
 
+  const navigate = useNavigate();
+  const context = useContext(UserInfoContext);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const url = 'http://' + config.baseUrl + ':' + config.port + '/login';
+    const url = fullUrl('/login');
     console.log(url);
     axios.post(url, {}, {
       params: {
@@ -46,8 +59,22 @@ function LoginBox(props: LoginFormProps) {
         password: loginFormData.password,
       }
     }).then(function (response:AxiosResponse<string>) {
-      if (response.data.includes('success')) {
-          props.children.setLoginStatus("loggedin");
+      if (response.status == 200) {
+        props.setLoginStatus("loggedin");
+        
+        const responseData:ResponseData = JSON.parse(JSON.stringify(response.data));
+        console.log(response.data)
+        let newUserInfo:UserInfo = {
+          userId: responseData.id,
+          userName: responseData.name,
+          email: responseData.email,
+          mobilePhone: responseData.mobile_phone,
+          birthday: responseData.birthday,
+          gender: responseData.gender,
+        }
+        props.setContextUserInfo(newUserInfo);
+        console.log('success\n');
+        // navigate('/user');
       }
     }).catch(function (error) {
       console.log(error);

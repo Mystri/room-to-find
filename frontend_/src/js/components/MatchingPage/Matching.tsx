@@ -1,11 +1,10 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-type UserInfoPageProps = {
-  children: {
-  }
+interface MatchingPageProps {
+
 }
 
-export default function UserInfoPage(props: UserInfoPageProps) {
-  return <Box>UserInfoPage</Box>
+export default function UserInfoPage(props: PropsWithChildren<MatchingPageProps>) {
+  return <Box></Box>
 };

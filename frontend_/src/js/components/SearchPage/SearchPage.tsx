@@ -1,11 +1,9 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-type SearchPageProps = {
-  children: {
-  }
+interface SearchPageProps {
 }
 
-export default function SearchPage(props: SearchPageProps) {
+export default function SearchPage(props: PropsWithChildren<SearchPageProps>) {
   return <Box>SearchPage</Box>
 };
