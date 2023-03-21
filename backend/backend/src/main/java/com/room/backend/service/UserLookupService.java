@@ -1,8 +1,8 @@
 package com.room.backend.service;
 
 import com.room.backend.data.entity.Permission;
-import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersLogin;
+import com.room.backend.data._generated.entity.UsersInfo;
+import com.room.backend.data._generated.entity.UsersLogin;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ public interface UserLookupService {
     UsersLogin findLoginById(Integer id);
 
     UsersLogin findLoginByUsername(String username);
-
 
     List<Permission> findPermissionsByUsername(String username);
 

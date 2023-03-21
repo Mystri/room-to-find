@@ -1,10 +1,11 @@
 package com.room.backend;
 
-import com.room.backend.controller.MainController;
-import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersInfoExample;
-import com.room.backend.data.entity.UsersLogin;
-import com.room.backend.data.mapper.UsersInfoMapper;
+import com.room.backend.data._generated.entity.ApartmentsInfo;
+import com.room.backend.data._generated.entity.UsersInfo;
+import com.room.backend.data._generated.entity.UsersInfoExample;
+import com.room.backend.data._generated.mapper.UsersInfoMapper;
+import com.room.backend.data.mapper.CustomUserMapper;
+import com.room.backend.service.ApartmentService;
 import com.room.backend.service.UserLookupService;
 import com.room.backend.service.UserRegistrationService;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ import java.sql.Connection;
 import java.util.Date;
 import java.sql.SQLException;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class DataAccessTests {
@@ -84,6 +87,18 @@ public class DataAccessTests {
         List<UsersInfo> usersInfoList = usersInfoMapper.selectByExample(usersInfoExample);
 
         System.out.println(usersInfoList);
+
+    }
+
+
+
+    @Autowired
+    CustomUserMapper customUserMapper;
+
+    @Test
+    void testSelectAptFromId() {
+        List<ApartmentsInfo> apartmentsInfoList = customUserMapper.getApartmentsInfoByUserId(1);
+        System.out.println(apartmentsInfoList);
 
     }
 

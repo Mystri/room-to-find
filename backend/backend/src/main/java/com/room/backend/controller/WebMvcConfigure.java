@@ -12,5 +12,9 @@ public class WebMvcConfigure implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST")
                 .allowedHeaders("Content-Type", "Authorization");
+        registry.addMapping("/api/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST")
+                .allowedHeaders("Content-Type", "Authorization");
     }
 }

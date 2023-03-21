@@ -5,7 +5,7 @@ import FavoriteApartmentDisplay from './FavoriteApartmentsDisplay';
 import FriendsDisplay from './FriendsDisplay';
 import { UserInfo } from '../../types/frontend';
 import axios from 'axios';
-import { fullUrl } from '../../../backend.config';
+import { fullUrl } from '../../../backend';
 import { UserInfoContext } from '../../common/Contexts';
 
 interface UserInfoPageProps {

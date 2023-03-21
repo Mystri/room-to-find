@@ -1,18 +1,16 @@
 package com.room.backend.service.impl;
 
 import com.room.backend.data.entity.Permission;
-import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersInfoExample;
-import com.room.backend.data.entity.UsersLogin;
+import com.room.backend.data._generated.entity.UsersInfo;
+import com.room.backend.data._generated.entity.UsersInfoExample;
+import com.room.backend.data._generated.entity.UsersLogin;
 import com.room.backend.data.mapper.PermissionMapper;
-import com.room.backend.data.mapper.UsersInfoMapper;
-import com.room.backend.data.mapper.UsersLoginMapper;
+import com.room.backend.data._generated.mapper.UsersInfoMapper;
+import com.room.backend.data._generated.mapper.UsersLoginMapper;
 import com.room.backend.service.UserLookupService;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("UserLookupService")

@@ -1,8 +1,7 @@
 package com.room.backend.security.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersLogin;
+import com.room.backend.data._generated.entity.UsersLogin;
 import com.room.backend.service.UserLookupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.room.backend.service;
 
-import com.room.backend.data.entity.UsersInfo;
+import com.room.backend.data._generated.entity.UsersInfo;
 
 import java.util.Date;
 

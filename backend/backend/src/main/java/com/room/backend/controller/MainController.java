@@ -1,17 +1,20 @@
 package com.room.backend.controller;
 
-import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersLogin;
-import com.room.backend.data.mapper.UsersInfoMapper;
+import com.room.backend.data._generated.entity.ApartmentsInfo;
+import com.room.backend.data._generated.entity.UsersInfo;
+import com.room.backend.data._generated.mapper.UsersInfoMapper;
+import com.room.backend.service.ApartmentService;
 import com.room.backend.service.UserLookupService;
 import com.room.backend.service.UserRegistrationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
+@Slf4j
 public class MainController {
 
     @Autowired
@@ -20,16 +23,26 @@ public class MainController {
     @Autowired
     UserLookupService userLookupService;
 
-    @GetMapping("/users/{id}")
+    @Autowired
+    ApartmentService apartmentService;
+
+    @GetMapping("/api/favapt/{userId}")
+    List<ApartmentsInfo> getApartment(@PathVariable Integer userId) {
+        return apartmentService.findUserFavoriteApartment(userId);
+    }
+
+    @GetMapping("/api/ping")
+    void ping() {
+        log.info("pinged");
+    }
+
+    @GetMapping("/api/users/{id}")
     UsersInfo getUserById(@PathVariable Integer id) {
         UsersInfoMapper usersInfoMapper;
         UsersInfo usersInfo = userLookupService.findUserById(id);
         return usersInfo;
     }
-
-
-
-    @PostMapping("/users/register")
+    @PostMapping("/api/users/register")
     UsersInfo registerUser(String userName,
                            String email,
                            Integer mobilePhone,
@@ -47,7 +60,7 @@ public class MainController {
         return usersInfo;
     }
 
-    @GetMapping("/query-user")
+    @GetMapping("/api/query-user")
     String queryUser() {
         return "query user successful!";
     }

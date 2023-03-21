@@ -5,6 +5,8 @@ import { Box } from '@mui/material';
 import styled from '@emotion/styled';
 import AppRoutes from './components/AppRoutes';
 import { LoginStatus, UserInfo } from './types/frontend';
+import axios from 'axios';
+import { fullUrl } from '../backend';
 
 interface AppState {
   loginStatus: LoginStatus
@@ -23,7 +25,20 @@ class App extends React.Component<AppProps, AppState> {
 
   constructor(props: AppProps) {
     super(props);
-    this.state = JSON.parse(localStorage.getItem('state'));
+    let localState = JSON.parse(localStorage.getItem('state'));
+    this.state = localState ? localState : {
+      loginStatus: 'loggedout',
+      userInfo:null,
+    }
+
+    axios.get(fullUrl('/api/ping')).then((response) => {
+      console.log(response);
+    }).catch((e) => {
+      if (e.code === "ERR_BAD_REQUEST") {
+        this.state = {...this.state, userInfo: null};
+      }
+    });
+
     this.setState = this.setState.bind(this);
   }
 

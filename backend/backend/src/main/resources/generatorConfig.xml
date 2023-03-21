@@ -21,16 +21,16 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.room.backend.data.entity" targetProject="src\main\java">
+        <javaModelGenerator targetPackage="com.room.backend.data._generated.entity" targetProject="src\main\java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapper"  targetProject="src\main\resources">
+        <sqlMapGenerator targetPackage="mapper.generated"  targetProject="src\main\resources">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.room.backend.data.mapper" targetProject="src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.room.backend.data._generated.mapper" targetProject="src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 

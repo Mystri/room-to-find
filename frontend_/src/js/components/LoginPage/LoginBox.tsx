@@ -6,7 +6,7 @@ import axios, { AxiosResponse } from 'axios';
 import { Paper } from '@mui/material';
 import { LoginStatus, UserInfo } from '../../types/frontend.js';
 import { useNavigate } from 'react-router';
-import { fullUrl } from '../../../backend.config';
+import { fullUrl } from '../../../backend';
 import { UserInfoContext } from '../../common/Contexts';
 
 export interface LoginFormProps {

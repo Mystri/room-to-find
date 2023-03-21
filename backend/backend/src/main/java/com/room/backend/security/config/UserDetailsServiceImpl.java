@@ -1,12 +1,9 @@
 package com.room.backend.security.config;
 
 import com.room.backend.data.entity.Permission;
-import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersInfoExample;
-import com.room.backend.data.entity.UsersLogin;
+import com.room.backend.data._generated.entity.UsersLogin;
 import com.room.backend.data.mapper.PermissionMapper;
-import com.room.backend.data.mapper.UsersInfoMapper;
-import com.room.backend.data.mapper.UsersLoginMapper;
+import com.room.backend.data._generated.mapper.UsersInfoMapper;
 import com.room.backend.service.UserLookupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

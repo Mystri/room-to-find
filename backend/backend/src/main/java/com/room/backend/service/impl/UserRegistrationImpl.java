@@ -1,21 +1,17 @@
 package com.room.backend.service.impl;
 
 
-import com.room.backend.data.entity.UsersInfo;
-import com.room.backend.data.entity.UsersLogin;
-import com.room.backend.data.entity.UsersLoginExample;
-import com.room.backend.data.mapper.UsersInfoMapper;
-import com.room.backend.data.mapper.UsersLoginMapper;
+import com.room.backend.data._generated.entity.UsersInfo;
+import com.room.backend.data._generated.entity.UsersLogin;
+import com.room.backend.data._generated.mapper.UsersInfoMapper;
+import com.room.backend.data._generated.mapper.UsersLoginMapper;
 import com.room.backend.service.UserRegistrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 
 @Slf4j

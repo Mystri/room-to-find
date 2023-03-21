@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan({"com.room.backend.data.mapper"})
+@MapperScan({"com.room.backend.data"})
 public class BackendApplication {
 
 	public static void main(String[] args) {
